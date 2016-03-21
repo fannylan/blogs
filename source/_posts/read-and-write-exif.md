@@ -1,6 +1,10 @@
-title: Android读写图片Exif信息
-------------------------
-# ![image](/images/images_types.jpg)
+title:  Android读写图片Exif信息
+
+date: 2016-3-1 20:10:30
+
+tags: Android
+
+---
 
 需求场景：需要将原始图片缩放之后依旧保留原始图片Exif信息
 
