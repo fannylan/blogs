@@ -1,11 +1,13 @@
 ---
 title: Android apk 防止反编译：加壳保护方案
 date: 2016-03-18 10:49:48 +08:00
-tags: "Android"
+tags: Android
+category: Android Dev
+
 ---
 
 主要讨论Android APK的加壳技术，主要是讨论加壳方式，原理，以及应用在实际工程中遇到的问题和解决方案。撇开其他第三方的Android  APK加固工具和加固方式，这里只讨论手动的加壳保护。
-
+<!-- more -->
 加壳保护是在不影响app的运行效率和app开发效率的的前提下，防止他人直接对APK进行反编译，提高Android app的安全性，保护开发成果的一种方式。原理就是当壳程序运行的时候，真正的源程序被解密并且动态加载到系统中。
 
 **从最简单的加壳Demo开始入手：**
@@ -124,9 +126,9 @@ jarsigner -verify final.apk
 
 先将源码编译出一个包来，安装，应用先进入启动页，然后首页。首页分两个tab ,可以滑动，还有页面的简单跳转。
 
-![pic](https://d1zjcuqflbd5k.cloudfront.net/files/acc_467455/10Z61?response-content-disposition=inline;%20filename=S60321-110746.jpg&Expires=1458543065&Signature=g3-5kRG6r9TrPKF8rcQ~Sd0uLMPnr5xGNDEbdy~bGjq7Q0z-mvcHjf9QNw-OvqQvSnMyoEMiGwGsuMqHvkEbhSx-FHIjPyfbRBqAt6tGPj9eUxji~A55iFhWwYVcFifVNYa2TdmDKw~HdTSLTYAcnAjYujO2LXoMKXQraC9eHuw_&Key-Pair-Id=APKAJTEIOJM3LSMN33SA)
+![pic](http://i1.dix0.com/doimg/5facnn3yl2an54691.jpg)
+![pic](http://i1.dix0.com/doimg/8fa5nn8yl1an45547.jpg)
 
-![pic](https://d1zjcuqflbd5k.cloudfront.net/files/acc_467455/1gGAw?response-content-disposition=inline;%20filename=S60321-110811.jpg&Expires=1458542898&Signature=FifVugG~FB2DsnersjxZVjG-WmMuDcQGOFOrol3zJDakuMlWnN1bc~M5XSaUd8h99epJ-s8n8qsowy5SQ-Uc8a6jWFzdBcEwWutZ5nM8KiOeQWpReGV33C8hS7S~y-2AMhtD~1tfYBu0QH5eWMHgyHBH3WJlmMPmh5AacfqBmAg_&Key-Pair-Id=APKAJTEIOJM3LSMN33SA)
 
 看源码目录结构，可以看到有如下几个模块：
 -app
@@ -176,7 +178,7 @@ Fragment fragment = Small.createObject("fragment-v4", sUris[position], MainActiv
  Small.openUri("https://github.com/wequick/Small/issues", MainActivity.this);
 
 ```
-引用AndroidLib，其中style utils都是以插件的方式，是独立模块
+引用AndroidLib，其中style utils都是以插件的方式，是独立模块，在app.main模块中使用：
 
 ```
 
@@ -186,6 +188,12 @@ Fragment fragment = Small.createObject("fragment-v4", sUris[position], MainActiv
 ```
 
 其余几个模块类似。
+
+根据实际的项目需要，将Small这个框架引入实际工程中也是类似的思路。
+
+1. 整个源程序将由壳程序和源程序模块组成。
+2. 按项目复杂程度来决定，entity，utils，constant等一些基础包的分包粒度。项目不复杂，可以将基础包统一规划入一个模块中。
+3. 按照项目各个模块的重要程度，决定应用插件化的百分比。如果每个模块都很重要，都需要保护实现细节，就可以按照Small Sample的工程结构来组织。
 
 
 **其他**
